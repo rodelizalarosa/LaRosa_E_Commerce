@@ -2,7 +2,7 @@
 <?php template('header.php'); ?>
 <?php
 
-use Aries\MiniFrameworkStore\Models\Checkout;
+use Rodeliza\MiniFrameworkStore\Models\Checkout;
 
 $checkout = new Checkout();
 

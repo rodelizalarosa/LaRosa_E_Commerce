@@ -2,7 +2,7 @@
 <?php template('header.php'); ?>
 <?php
 
-use Aries\MiniFrameworkStore\Models\Product;
+use Rodeliza\MiniFrameworkStore\Models\Product;
 
 $products = new Product();
 $category = $_GET['name'];

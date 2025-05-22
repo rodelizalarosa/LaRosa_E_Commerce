@@ -1,6 +1,6 @@
 <?php
 
-namespace Aries\MiniFrameworkStore\Models;
+namespace Rodeliza\MiniFrameworkStore\Models;
 
 use Rodeliza\MiniFrameworkStore\Includes\Database;
 use Carbon\Carbon;
