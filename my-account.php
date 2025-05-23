@@ -1,3 +1,4 @@
+
 <?php include 'helpers/functions.php'; ?>
 <?php template('header.php'); ?>
 <?php
@@ -34,7 +35,10 @@ if(isset($_POST['submit'])) {
     $_SESSION['user']['phone'] = $phone;
     $_SESSION['user']['birthdate'] = $birthdate;
 
-    echo "<script>alert('Account details updated successfully!');</script>";
+    echo "<script>
+        alert('Account details updated successfully!');
+        window.location.href = 'index.php';
+    </script>";
 }
 
 ?>

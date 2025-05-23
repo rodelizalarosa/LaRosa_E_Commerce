@@ -1,3 +1,137 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins&display=swap');
+
+/* Base layout */
 .store-body {
-  background-color: #e2e2e2
+    background-color: #D2D0A0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f8f6;
+    color: #2f3e35;
+    margin: 0;
+    padding: 0;
+}
+
+/* Brand text */
+.brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2C6E49;
+}
+
+/* Navbar styling */
+.custom-navbar {
+    background-color: #E3F4D6; /* updated */
+    padding: 1rem; /* updated */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Navbar brand */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #537D5D !important; /* original */
+    text-decoration: none;
+}
+
+.navbar-brand span {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #537D5D;
+}
+
+/* Navbar links */
+.navbar-nav .nav-link,
+.navbar .dropdown-menu .dropdown-item {
+    color: #3A5A40 !important; /* updated */
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #CDEAC0; /* updated */
+    color: #1e3d2f !important; /* updated */
+    transition: all 0.3s ease;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    background-color: #f0f8e0; /* updated */
+    border-radius: 6px;
+    border: none;
+    padding: 0.5rem;
+}
+
+/* Cart Icon Badge */
+.icon-link .badge {
+    margin-left: 5px;
+    background-color: #6A994E; /* updated */
+    color: white;
+    font-size: 0.8rem;
+    padding: 4px 7px;
+    border-radius: 10px;
+}
+
+/* Home logo (if used elsewhere) */
+.home-logo {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #537D5D;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #386641;
+}
+
+/* General utility */
+.text-matcha {
+    color: #537D5D;
+}
+
+.bg-matcha {
+    background-color: #9EBC8A;
+}
+
+.rounded-box {
+    border-radius: 12px;
+    padding: 1rem;
+    background-color: #f3f3ea;
+}
+
+.confirmation-message {
+  color: green !important;
+  font-size: 0.9rem !important;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.alert-small {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#cart-count {
+    font-size: 0.75rem;
+    padding: 4px 7px;
 }

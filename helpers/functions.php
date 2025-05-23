@@ -1,4 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+
 
 function assets($path) {
     include 'assets/' . $path;
@@ -22,3 +28,5 @@ function isLoggedIn() {
 
     return false;
 }
+
+?>

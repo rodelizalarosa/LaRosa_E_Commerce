@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
                         <select class="form-select" aria-label="Default select example" name="category">
                             <option selected>Select category</option>
                             <?php foreach($categories->getAll() as $category): ?>
-                            <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                            <option value="<?php echo $category['id']; ?>"><?php echo $category['category_name']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

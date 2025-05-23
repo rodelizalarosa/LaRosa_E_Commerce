@@ -23,4 +23,12 @@ class Category extends Database
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function getByName($name)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM product_categories WHERE category_name = :name LIMIT 1");
+        $stmt->execute(['name' => $name]);
+        return $stmt->fetch();
+    }
+
+
 }
