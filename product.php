@@ -80,14 +80,44 @@ $pesoFormatter = new NumberFormatter($amounLocale, NumberFormatter::CURRENCY);
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Update quantity data-attribute when changed
     const quantityInput = document.getElementById('quantity');
     const addToCartBtn = document.querySelector('.add-to-cart');
 
     if (quantityInput && addToCartBtn) {
         quantityInput.addEventListener('input', () => {
             addToCartBtn.setAttribute('data-quantity', quantityInput.value || 1);
+        });
+    }
+
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const productId = this.getAttribute('data-productid');
+            const quantity = this.getAttribute('data-quantity') || 1;
+
+            fetch('cart-process.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `productId=${encodeURIComponent(productId)}&quantity=${encodeURIComponent(quantity)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire('Added!', 'Product added to cart.', 'success');
+                    // Optionally update cart UI here
+                } else {
+                    Swal.fire('Error', 'Failed to add product to cart.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+            });
         });
     }
 </script>

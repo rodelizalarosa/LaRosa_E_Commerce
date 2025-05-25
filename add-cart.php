@@ -123,7 +123,7 @@ $categoryModel = new Category();
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 .btn-checkout {
-    background-color:rgb(93, 144, 68); /* Matcha themed green */
+    background-color:rgb(86, 142, 58); /* Matcha themed green */
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -137,11 +137,11 @@ $categoryModel = new Category();
 
 <div class="container my-5">
     <div class="cart-header">
-        <h2>My Cart (<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>)</h2>
+        <h2>My Cart (<?php echo count($_SESSION['cart']); ?>)</h2>
         <button class="cart-close-btn" onclick="window.location.href='index.php'">&times;</button>
     </div>
 
-    <?php if(!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0): ?>
+    <?php if(countCart() == 0): ?>
         <p>Your cart is empty.</p>
         <a href="index.php" class="btn btn-primary">Continue Shopping</a>
     <?php else: ?>

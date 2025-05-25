@@ -3,8 +3,10 @@
 <?php
 
 use Rodeliza\MiniFrameworkStore\Models\Checkout;
+use Rodeliza\MiniFrameworkStore\Models\User;
 
 $checkout = new Checkout();
+$userModel = new User();
 
 $superTotal = 0;
 $orderId = null;
@@ -17,6 +19,11 @@ if(isset($_SESSION['cart'])) {
 
 $amounLocale = 'en_PH';
 $pesoFormatter = new NumberFormatter($amounLocale, NumberFormatter::CURRENCY);
+
+$userInfo = null;
+if(isset($_SESSION['user'])) {
+    $userInfo = $userModel->getById($_SESSION['user']['id']);
+}
 
 if(isset($_POST['submit'])) {
     $name = $_POST['name'];
@@ -49,83 +56,142 @@ if(isset($_POST['submit'])) {
 
     unset($_SESSION['cart']);
 
-    echo "<script>alert('Order placed successfully!'); window.location.href='/index.php'</script>";
+    echo "<script>alert('Order placed successfully!'); window.location.href='order-success.php'</script>";
 }
 
 ?>
 
-<div class="container my-5">
-<div class="row">
-        <h1>Checkout</h1>
-        <h2>Cart Details</h2>
-        <table class="table table-bordered">
-            <?php if(countCart() > 0): ?>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($_SESSION['cart'] as $item): ?>
-                    <tr>
-                        <td><?php echo $item['name'] ?></td>
-                        <td><?php echo $item['quantity'] ?></td>
-                        <td><?php echo $pesoFormatter->formatCurrency($item['price'], 'PHP') ?></td>
-                        <td><?php echo $pesoFormatter->formatCurrency($item['total'], 'PHP') ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                <tr>
-                    <td colspan="3" class="text-end"><strong>Total</strong></td>
-                    <td><strong><?php echo $pesoFormatter->formatCurrency($superTotal, 'PHP') ?></strong></td>
-                </tr>
-            </tbody>
-            <?php else: ?>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr></tr>
-                <tr>
-                    <td colspan="3" class="text-end"><strong>Total</strong></td>
-                    <td><strong></td>
-                </tr>
-            </tbody>
-            <?php endif; ?>
-        </table>
+<style>
+.checkout-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    display: flex;
+    gap: 2rem;
+}
+.checkout-form {
+    flex: 2;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.checkout-summary {
+    flex: 1;
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+.checkout-summary h3 {
+    margin-bottom: 1rem;
+}
+.checkout-summary .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.checkout-summary .cart-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+.checkout-summary .cart-item-details {
+    flex-grow: 1;
+}
+.checkout-summary .cart-item-price {
+    font-weight: 600;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.shipping-method, .payment-method {
+    margin-top: 2rem;
+}
+.shipping-method label, .payment-method label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.checkout-button {
+    margin-top: 2rem;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+</style>
+
+<div class="checkout-container">
+    <div class="checkout-form">
+        <h2>Shipping Address</h2>
+        <form action="checkout.php" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name*</label>
+                <input type="text" id="name" name="name" required value="<?php echo htmlspecialchars($userInfo['name'] ?? ''); ?>">
+            </div>
+            <div class="form-group">
+                <label for="phone">Contact Number*</label>
+                <input type="text" id="phone" name="phone" required value="<?php echo htmlspecialchars($userInfo['phone'] ?? ''); ?>">
+            </div>
+            <div class="form-group">
+                <label for="address">Address*</label>
+                <textarea id="address" name="address" rows="4" required><?php echo htmlspecialchars($userInfo['address'] ?? ''); ?></textarea>
+            </div>
+
+            <div class="shipping-method">
+                <label>Shipping Method</label>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" id="free_shipping" name="shipping_method" value="free" checked disabled>
+                    <label for="free_shipping" style="margin: 0;">Free Shipping</label>
+                </div>
+            </div>
+
+            <div class="payment-method">
+                <label>Payment Method</label>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" id="cod" name="payment_method" value="cod" checked disabled>
+                    <label for="cod" style="margin: 0;">Cash on Delivery</label>
+                </div>
+            </div>
+
+            <button type="submit" name="submit" class="checkout-button">Checkout</button>
+        </form>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Shipping Information</h2>
-            <?php if(countCart() == 0): ?>
-                <p>Your cart is empty.</p>
-                <a href="index.php" class="btn btn-primary">Continue Shopping</a>
-            <?php else: ?>
-                <form action="checkout.php" method="POST">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+
+    <div class="checkout-summary">
+        <h3>Your Cart</h3>
+        <?php if(countCart() > 0): ?>
+            <?php foreach($_SESSION['cart'] as $item): ?>
+                <div class="cart-item">
+                    <img src="<?php echo htmlspecialchars($item['image_path'] ?? 'uploads/default.png'); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                    <div class="cart-item-details">
+                        <div><?php echo htmlspecialchars($item['name']); ?></div>
+                        <small><?php echo htmlspecialchars($item['description'] ?? ''); ?></small>
                     </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
-                    </div>
-                    <button type="submit" class="btn btn-success" name="submit">Place Order</button>
-                    <a href="cart.php" class="btn btn-primary">View Cart</a>
-                </form>
-            <?php endif; ?>
-        </div>
+                    <div class="cart-item-price"><?php echo $pesoFormatter->formatCurrency($item['total'] * $item['quantity'], 'PHP'); ?></div>
+                </div>
+            <?php endforeach; ?>
+            <hr>
+            <div><strong>Total: <?php echo $pesoFormatter->formatCurrency($superTotal, 'PHP'); ?></strong></div>
+        <?php else: ?>
+            <p>Your cart is empty.</p>
+        <?php endif; ?>
     </div>
 </div>
 

@@ -30,6 +30,7 @@ $cartCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart']
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/custom-hover.css" />
 
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

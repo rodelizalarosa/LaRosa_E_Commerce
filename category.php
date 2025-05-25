@@ -1,27 +1,26 @@
 <?php 
+require 'vendor/autoload.php';
 include 'helpers/functions.php';
 
 use Rodeliza\MiniFrameworkStore\Models\Product;
 use Rodeliza\MiniFrameworkStore\Models\Category;
 
-    $categoryName = isset($_GET['category_name']) ? $_GET['category_name'] : null;
+    $categoryId = isset($_GET['id']) ? $_GET['id'] : null;
 
-    // Redirect early if no category_name provided
-    if (!$categoryName) {
+    // Redirect early if no id provided
+    if (!$categoryId) {
         header('Location: index.php');
         exit;
     }
 
     $categoryModel = new Category();
-    $categoryDetails = $categoryModel->getByName($categoryName);
+    $categoryDetails = $categoryModel->getById($categoryId);
 
     // Redirect if category not found
     if (!$categoryDetails) {
         header('Location: index.php');
         exit;
     }
-
-    $categoryId = $categoryDetails['id'];
 
     template('header.php');
 
@@ -50,7 +49,7 @@ use Rodeliza\MiniFrameworkStore\Models\Category;
                     <div class="position-relative">
                         <img src="<?php echo $product['image_path']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
                         <div class="position-absolute top-0 end-0 m-2">
-                            <span class="badge bg-accent">
+                            <span class="badge bg-success">
                                 <?php echo $pesoFormatter->formatCurrency($product['price'], 'PHP'); ?>
                             </span>
                         </div>
@@ -58,18 +57,18 @@ use Rodeliza\MiniFrameworkStore\Models\Category;
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title"><?php echo $product['name']; ?></h5>
                         <p class="card-text flex-grow-1 text-muted"><?php echo substr($product['description'], 0, 100) . '...'; ?></p>
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary flex-fill">
                                 <i class="bi bi-eye me-2"></i>View Product
                             </a>
                             <?php if (isLoggedIn()): ?>
-                                <button class="btn btn-success add-to-cart" 
+                                <button class="btn btn-success add-to-cart flex-fill" 
                                         data-productid="<?php echo $product['id']; ?>" 
                                         data-quantity="1">
                                     <i class="bi bi-cart-plus me-2"></i>Add to Cart
                                 </button>
                             <?php else: ?>
-                                <a href="login.php" class="btn btn-success">
+                                <a href="login.php" class="btn btn-success flex-fill">
                                     <i class="bi bi-cart-plus me-2"></i>Add to Cart
                                 </a>
                             <?php endif; ?>

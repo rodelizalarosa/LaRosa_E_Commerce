@@ -30,5 +30,12 @@ class Category extends Database
         return $stmt->fetch();
     }
 
+    public function getById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM product_categories WHERE id = :id LIMIT 1");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
+
 
 }

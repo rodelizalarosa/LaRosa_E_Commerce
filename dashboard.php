@@ -3,6 +3,7 @@ include 'helpers/functions.php';
 template('header.php'); 
 
 use Rodeliza\MiniFrameworkStore\Models\Checkout;
+global $user;
 $checkout = new Checkout();
 
 $statusClass = [
@@ -12,7 +13,7 @@ $statusClass = [
     'Processing' => 'bg-info text-dark'
 ];
 
-$orders = $checkout->getAllOrders(); // make sure this fetches order_status now
+$orders = $checkout->getOrdersByUserId($user['id']); // fetch orders for logged-in user
 ?>
 
 <div class="container my-5">
@@ -27,12 +28,15 @@ $orders = $checkout->getAllOrders(); // make sure this fetches order_status now
             ?>
             <div class="col">
                 <div class="card h-100">
+                    <?php if (!empty($order['image_path'])): ?>
+                        <img src="<?= htmlspecialchars($order['image_path']) ?>" class="card-img-top" alt="<?= htmlspecialchars($order['product_name']) ?>">
+                    <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title">Order #<?= htmlspecialchars($order['id']) ?></h5>
                         <p><strong>Product:</strong> <?= htmlspecialchars($order['product_name']) ?></p>
                         <p><strong>Quantity:</strong> <?= htmlspecialchars($order['quantity']) ?></p>
                         <p><strong>Total Price:</strong> ₱<?= number_format($order['total_price'], 2) ?></p>
-                        <p><strong>Order Date:</strong> <?= date('F j, Y', strtotime($order['order_date'])) ?></p>
+                        <p><strong>Order Date:</strong> <?= date('F j, Y', strtotime($order['order_date'] ?? '')) ?></p>
                         <p><strong>Status:</strong> <span class="badge <?= $class ?>"><?= htmlspecialchars($status) ?></span></p>
                     </div>
                 </div>
